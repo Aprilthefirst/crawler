@@ -1,3 +1,4 @@
+import re
 import urllib.request
 from urllib.error import URLError, HTTPError, ContentTooShortError
 
@@ -18,10 +19,19 @@ def download(url, user_agent='wswp', num_retries=2, charset='utf-8'):
             if hasattr(e, 'code') and 500 <= e.code <600:
                 return download(url, num_retries - 1)
     return html
-        
+
+def crawl_sitemap(url):
+    sitemap = download(url)
+    #links = re.findall('<div class="book-info">(.*)</div>', sitemap)
+    links = re.findall('<h3 class="bigsize">(.*?)</h3>', sitemap)
+    for link in links:
+        if not link:
+            link = 'None'
+        return type(link)
+
 
 if __name__ == "__main__":
     url = 'https://book.douban.com'
-    #url = 'http://httpstat.us/500' 
     print(download(url))
-
+    print('download end')
+    print(crawl_sitemap(url))
